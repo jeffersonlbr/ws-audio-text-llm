@@ -1,0 +1,17 @@
+Flask
+assemblyai==0.40.2
+pysqlite3
+werkzeug
+python-docx
+reportlab
+torch>=2.0.0
+ffmpeg-python
+spacy
+pydub
+python-dotenv
+requests
+nltk
+docx2pdf
+
+# instalar via chocolatey ffmpeg
+# choco install ffmpeg -- via bash

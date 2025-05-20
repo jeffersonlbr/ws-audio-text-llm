@@ -1,0 +1,37 @@
+# Arquivos de ambiente
+.env
+.env.local
+.env.development
+.env.production
+
+# Dependências
+node_modules/
+venv/
+__pycache__/
+*.py[cod]
+*.egg-info/
+dist/
+build/
+
+# Logs e databases
+*.log
+*.sqlite
+*.db
+
+# Diretórios de sistema
+.DS_Store
+Thumbs.db
+
+# Diretórios de IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Diretórios de output
+output/
+uploads/
+
+# Arquivos temporários
+*.tmp
+*.temp

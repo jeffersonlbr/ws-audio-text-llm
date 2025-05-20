@@ -1,0 +1,851 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>EDP AudioTranscrição</title>
+    <meta charset="UTF-8">
+    <style>
+        /* Definição de cores da EDP */
+        :root {
+            --edp-dark-blue: #1e2935;
+            --edp-green: #00e676;
+            --edp-light-gray: #f9f9f9;
+            --edp-dark-gray: #333333;
+            --edp-border-color: #00e676;
+        }
+        
+        /* Configuração correta das fontes */
+        @font-face {
+            font-family: 'Inter';
+            src: url('/static/fonte_logo/Inter-Regular.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
+        
+        @font-face {
+            font-family: 'Inter';
+            src: url('/static/fonte_logo/Inter-Italic.ttf') format('truetype');
+            font-weight: normal;
+            font-style: italic; 
+        }
+        
+        @font-face {
+            font-family: 'GT Ultra';
+            src: url('/static/fonte_logo/gt-ultra-fine-bold.otf') format('opentype');
+            font-weight: bold;
+            font-style: normal;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', Arial, sans-serif;
+            max-width: 100%;
+            margin: 0 auto;
+            padding: 0;
+            color: var(--edp-dark-gray);
+            background-color: #ffffff;
+        }
+        
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 40px;
+            background-color: var(--edp-dark-blue);
+            color: white;
+            border-bottom: 1px solid var(--edp-border-color);
+        }
+        
+        .logo img {
+            height: 40px;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 30px;
+        }
+        
+        .nav-links a {
+            text-decoration: none;
+            color: white;
+            font-size: 15px;
+            padding: 8px 16px;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+        
+        .nav-links a.active {
+            background-color: rgba(255, 255, 255, 0.1);
+            font-weight: 500;
+        }
+        
+        .nav-links a:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+        
+        .main-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            text-align: center;
+        }
+        
+        .page-tag {
+            display: inline-block;
+            background-color: var(--edp-light-gray);
+            padding: 6px 15px;
+            border-radius: 20px;
+            margin-bottom: 20px;
+            font-size: 14px;
+            font-family: 'Inter', sans-serif;
+        }
+        
+        h1 {
+            font-family: 'GT Ultra', serif;
+            font-size: 32px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            color: var(--edp-dark-blue);
+        }
+        
+        .subtitle {
+            font-family: 'Inter', sans-serif;
+            font-size: 18px;
+            line-height: 1.6;
+            color: #666666;
+            max-width: 700px;
+            margin: 0 auto 40px;
+        }
+        
+        .flash {
+            padding: 12px;
+            margin: 15px 0;
+            background-color: #ffcccc;
+            border-left: 5px solid var(--edp-green);
+            border-radius: 4px;
+            text-align: left;
+        }
+        
+        .success {
+            background-color: #e8f5e9;
+            border-left: 5px solid var(--edp-green);
+        }
+        
+        .upload-container {
+            background-color: #ffffff;
+            border: 2px dashed #d0d0d0;
+            border-radius: 10px;
+            padding: 40px;
+            margin-bottom: 30px;
+            transition: border-color 0.3s;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+        
+        .upload-container:hover {
+            border-color: var(--edp-green);
+        }
+        
+        .upload-icon {
+            width: 60px;
+            height: 60px;
+            margin: 0 auto 20px;
+            background-color: var(--edp-light-gray);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .upload-title {
+            font-family: 'GT Ultra', serif;
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: var(--edp-dark-blue);
+        }
+        
+        .upload-instructions {
+            font-family: 'Inter', sans-serif;
+            color: #666666;
+            margin-bottom: 20px;
+        }
+        
+        .file-types {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 15px;
+            color: #777777;
+            font-size: 14px;
+            font-family: 'Inter', sans-serif;
+        }
+        
+        form {
+            max-width: 600px;
+            margin: 0 auto;
+            text-align: left;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+            padding: 0 15px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 500;
+            font-family: 'Inter', sans-serif;
+        }
+        
+        input[type="text"] {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid #d0d0d0;
+            border-radius: 5px;
+            font-family: 'Inter', sans-serif;
+            font-size: 15px;
+            transition: border-color 0.3s;
+            box-sizing: border-box;
+        }
+        
+        input[type="text"]:focus {
+            border-color: var(--edp-green);
+            outline: none;
+        }
+        
+        input[type="file"] {
+            padding: 8px;
+            display: none;
+        }
+        
+        /* Estilo para mostrar o nome do arquivo selecionado */
+        .file-input-wrapper {
+            position: relative;
+            margin-bottom: 20px;
+        }
+        
+        .file-name {
+            margin-top: 10px;
+            background-color: var(--edp-light-gray);
+            padding: 8px 12px;
+            border-radius: 5px;
+            display: none;
+            font-size: 14px;
+            text-align: center;
+            font-family: 'Inter', sans-serif;
+        }
+        
+        /* CSS para mostrar o nome do arquivo após seleção */
+        input[type="file"]:valid + .file-name {
+            display: block;
+            font-weight: 500;
+            color: var(--edp-green);
+        }
+        
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            margin-top: 10px;
+        }
+        
+        .checkbox-group input {
+            margin-right: 8px;
+        }
+        
+        .error-message {
+            color: var(--edp-green);
+            font-size: 13px;
+            margin-top: 4px;
+            display: none;
+            font-family: 'Inter', sans-serif;
+        }
+        
+        button {
+            background-color: var(--edp-green);
+            color: var(--edp-dark-blue);
+            padding: 12px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 500;
+            display: inline-block;
+            transition: background-color 0.3s;
+            margin-top: 20px;
+            font-family: 'Inter', sans-serif;
+        }
+        
+        button:hover {
+            background-color: var(--edp-green);
+            opacity: 0.8;
+        }
+        
+        /* Estilos para o modal de processamento */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.6);
+            overflow: auto;
+        }
+        
+        .modal-content {
+            background-color: #ffffff;
+            margin: 15% auto;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+            width: 80%;
+            max-width: 500px;
+        }
+        
+        .modal-header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+        
+        .modal-header h2 {
+            font-family: 'GT Ultra', serif;
+            font-size: 22px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: var(--edp-dark-blue);
+        }
+        
+        .modal-header p {
+            font-family: 'Inter', sans-serif;
+        }
+        
+        .step {
+            margin: 15px 0;
+            padding: 12px;
+            background-color: var(--edp-light-gray);
+            border-radius: 5px;
+            opacity: 0.6;
+            display: flex;
+            align-items: center;
+            transition: all 0.3s;
+            font-family: 'Inter', sans-serif;
+        }
+        
+        .step.active {
+            opacity: 1;
+            border-left: 4px solid var(--edp-green);
+            background-color: rgba(0, 230, 118, 0.1);
+        }
+        
+        /* Modificar o estilo das etapas concluídas */
+        .step.completed {
+            opacity: 1;
+            border-left: 4px solid var(--edp-green);
+            background-color: rgba(0, 230, 118, 0.2);
+        }
+        
+        .step-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 28px;
+            height: 28px;
+            line-height: 28px;
+            text-align: center;
+            background-color: #ddd;
+            color: white;
+            border-radius: 50%;
+            margin-right: 15px;
+            flex-shrink: 0;
+        }
+        
+        /* Ícone de check para etapas concluídas */
+        .step.completed .step-icon {
+            background-color: var(--edp-green);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .step.completed .step-icon:before {
+            content: "✓";
+        }
+        
+        .spinner {
+            border: 3px solid rgba(0, 0, 0, 0.1);
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            border-left-color: var(--edp-green);
+            display: inline-block;
+            margin-right: 15px;
+            animation: spin 1s ease infinite;
+        }
+        
+        /* Adicionar ícone de check após a conclusão da etapa 1 */
+        .step.completed .spinner {
+            display: none;
+        }
+        
+        .step.completed .check-icon {
+            display: flex;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background-color: var(--edp-green);
+            color: white;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            flex-shrink: 0;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* Estilos para gravação de áudio */
+        .record-container {
+            background-color: #ffffff;
+            border: 2px dashed #d0d0d0;
+            border-radius: 10px;
+            padding: 30px;
+            margin: 30px 0;
+            transition: border-color 0.3s;
+            text-align: center;
+        }
+
+        .record-container:hover {
+            border-color: var(--edp-green);
+        }
+
+        .record-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .record-button {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background-color: var(--edp-dark-blue);
+            color: white;
+            padding: 10px 15px;
+            border: 1px solid var(--edp-green);
+            border-radius: 5px;
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+            font-weight: 500;
+            transition: background-color 0.3s;
+        }
+
+        .record-button:hover:not(:disabled) {
+            background-color: var(--edp-dark-blue);
+            opacity: 0.9;
+        }
+
+        .record-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        #startRecord {
+            background-color: var(--edp-dark-blue);
+        }
+
+        #stopRecord {
+            background-color: var(--edp-dark-blue);
+        }
+
+        .recording-status {
+            font-family: 'Inter', sans-serif;
+            color: #666;
+            margin: 10px 0;
+        }
+
+        .recording-timer {
+            font-family: 'GT Ultra', serif;
+            font-size: 24px;
+            margin: 10px 0;
+            color: var(--edp-dark-blue);
+        }
+
+        .audio-preview {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: var(--edp-light-gray);
+            border-radius: 8px;
+        }
+
+        .use-recording {
+            display: block;
+            margin: 10px auto 0;
+            padding: 8px 15px;
+            background-color: var(--edp-green);
+            color: var(--edp-dark-blue);
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+            font-weight: 500;
+            transition: background-color 0.3s;
+        }
+
+        .use-recording:hover {
+            background-color: var(--edp-green);
+            opacity: 0.8;
+        }
+        
+        /* Responsividade */
+        @media (max-width: 768px) {
+            .main-container {
+                padding: 20px 15px;
+            }
+            
+            header {
+                padding: 15px;
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .upload-container {
+                padding: 20px;
+            }
+            
+            .form-group {
+                margin-bottom: 20px;
+            }
+            
+            input[type="text"] {
+                font-size: 14px;
+                padding: 8px 10px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .form-group {
+                margin-bottom: 15px;
+            }
+            
+            label {
+                font-size: 14px;
+            }
+            
+            input[type="text"] {
+                font-size: 13px;
+                padding: 6px 8px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <img src="/static/fonte_logo/logo.svg" alt="logo" onerror="this.onerror=null; this.src='https://www.edp.com/themes/edp/edp_scorp/logo.svg';">
+        </div>
+        <div class="nav-links">
+            <a href="/" class="active">AudioTranscrição</a>
+            <a href="/transcriptions">Histórico</a>
+        </div>
+    </header>
+    
+    <div class="main-container">
+        <div class="page-tag">AudioTranscrição</div>
+        <h1>Transforme Áudio em Texto com Precisão</h1>
+        <p class="subtitle">Faça upload do seu arquivo de áudio e obtenha uma transcrição precisa em segundos. Exporte para DOCX ou PDF para compartilhamento fácil.</p>
+        
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+            {% for category, message in messages %}
+              <div class="flash {{ category }}">{{ message }}</div>
+            {% endfor %}
+          {% endif %}
+        {% endwith %}
+        
+        <form id="uploadForm" action="/" method="post" enctype="multipart/form-data" onsubmit="document.getElementById('processingModal').style.display='block';">
+            <div class="file-input-wrapper">
+                <label for="audioFile" class="upload-container">
+                    <div class="upload-icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 16L12 8" stroke="#00e676" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M9 11L12 8 15 11" stroke="#00e676" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M20 16.7428V19C20 19.5523 19.5523 20 19 20H5C4.44772 20 4 19.5523 4 19V16.7428" stroke="#00e676" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                    <h2 class="upload-title">Enviar Arquivo de Áudio</h2>
+                    <p class="upload-instructions">Clique aqui para selecionar um arquivo de áudio</p>
+                    <div class="file-types">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="12" cy="12" r="10" stroke="#888888" stroke-width="2"/>
+                            <path d="M12 8V16" stroke="#888888" stroke-width="2" stroke-linecap="round"/>
+                            <path d="M16 12L8 12" stroke="#888888" stroke-width="2" stroke-linecap="round"/>
+                        </svg>
+                        <span>MP3, WAV, M4A</span>
+                        <span>•</span>
+                        <span>Máx 50MB</span>
+                    </div>
+                </label>
+                <input type="file" id="audioFile" name="file" accept="audio/*" required onchange="showFileName(this)">
+                <div class="file-name">Arquivo selecionado: <span id="fileName"></span></div>
+            </div>
+            
+            <!-- Container para gravação de áudio diretamente -->
+            <div class="record-container">
+                <h2 class="upload-title">Ou grave diretamente com o microfone</h2>
+                <div class="record-buttons">
+                    <button type="button" id="startRecord" class="record-button">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="12" cy="12" r="6" fill="#00e676" />
+                        </svg>
+                        Iniciar Gravação
+                    </button>
+                    <button type="button" id="stopRecord" class="record-button" disabled>
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="8" y="8" width="8" height="8" fill="#00e676" />
+                        </svg>
+                        Parar Gravação
+                    </button>
+                </div>
+                <div id="recordingStatus" class="recording-status">Pronto para gravar</div>
+                <div id="recordingTimer" class="recording-timer">00:00</div>
+                <div id="audioPreview" class="audio-preview" style="display: none;">
+                    <audio id="recordedAudio" controls></audio>
+                    <button type="button" id="useRecording" class="use-recording">Usar esta gravação</button>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="project_name">Nome do Depoimento *</label>
+                <input type="text" id="project_name" name="project_name" required minlength="10">
+            </div>
+            
+            <div class="form-group">
+                <label for="description">Descrição *</label>
+                <input type="text" id="description" name="description" required minlength="10">
+            </div>
+            
+            <div class="form-group">
+                <div class="checkbox-group">
+                    <input type="checkbox" id="split_audio" name="split_audio" checked>
+                    <label for="split_audio" style="display: inline; font-weight: normal;">Dividir áudio em segmentos para melhor processamento</label>
+                </div>
+            </div>
+            
+            <!-- Campos ocultos para compatibilidade com o backend -->
+            <input type="hidden" name="audio_start" value="0">
+            <input type="hidden" name="audio_end" value="0">
+            <input type="hidden" name="audio_duration" value="0">
+            
+            <div style="text-align: center;">
+                <button type="submit">Enviar para Transcrição</button>
+            </div>
+        </form>
+    </div>
+    
+    <!-- Modal de Processamento -->
+    <div id="processingModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Processando Áudio</h2>
+                <p>Por favor, aguarde enquanto processamos seu arquivo.</p>
+            </div>
+            <div class="step active" id="step1">
+                <div class="spinner"></div>
+                <div class="check-icon" style="display: none;">✓</div>
+                <span>Preparando e convertendo o áudio</span>
+            </div>
+            <div class="step" id="step2">
+                <div class="step-icon">2</div>
+                <span>Transcrevendo o áudio (pode demorar um pouco)</span>
+            </div>
+            <div class="step" id="step3">
+                <div class="step-icon">3</div>
+                <span>Identificando os falantes</span>
+            </div>
+            <div class="step" id="step4">
+                <div class="step-icon">4</div>
+                <span>Gerando os documentos finais</span>
+            </div>
+            <div class="step" id="step5">
+                <div class="step-icon">5</div>
+                <span>Finalizando</span>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Função para mostrar o nome do arquivo
+        function showFileName(input) {
+            if (input.files && input.files.length > 0) {
+                document.getElementById('fileName').textContent = input.files[0].name;
+            }
+        }
+        
+        // Função para simular o progresso das etapas quando o formulário é enviado
+        document.getElementById('uploadForm').addEventListener('submit', function() {
+            // Mostrar o modal
+            document.getElementById('processingModal').style.display = 'block';
+            
+            // Garantir que o primeiro passo esteja ativo
+            document.getElementById('step1').className = 'step active';
+            
+            // Simular o progresso das etapas
+            setTimeout(function() {
+                // Etapa 1 concluída, iniciar etapa 2
+                var step1 = document.getElementById('step1');
+                step1.className = 'step completed';
+                
+                // Ocultar spinner e mostrar ícone de check
+                if (step1.querySelector('.spinner')) {
+                    step1.querySelector('.spinner').style.display = 'none';
+                }
+                if (step1.querySelector('.check-icon')) {
+                    step1.querySelector('.check-icon').style.display = 'flex';
+                }
+                
+                document.getElementById('step2').className = 'step active';
+                
+                setTimeout(function() {
+                    // Etapa 2 concluída, iniciar etapa 3
+                    document.getElementById('step2').className = 'step completed';
+                    document.getElementById('step3').className = 'step active';
+                    
+                    setTimeout(function() {
+                        // Etapa 3 concluída, iniciar etapa 4
+                        document.getElementById('step3').className = 'step completed';
+                        document.getElementById('step4').className = 'step active';
+                        
+                        setTimeout(function() {
+                            // Etapa 4 concluída, iniciar etapa 5
+                            document.getElementById('step4').className = 'step completed';
+                            document.getElementById('step5').className = 'step active';
+                            
+                            // Opcional: Após alguns segundos, completar a etapa 5 também
+                            setTimeout(function() {
+                                document.getElementById('step5').className = 'step completed';
+                            }, 2000);
+                        }, 3000); // 3 segundos para a etapa 4
+                    }, 3000); // 3 segundos para a etapa 3
+                }, 4000); // 4 segundos para a etapa 2
+            }, 2000); // 2 segundos para a etapa 1
+            
+            // Não impedir o envio do formulário
+            return true;
+        });
+
+        // Variáveis para gravação
+        let mediaRecorder;
+        let audioChunks = [];
+        let recordingTimer;
+        let recordingTime = 0;
+        let recordedBlob;
+
+        document.getElementById('startRecord').addEventListener('click', async function() {
+            try {
+                // Solicitar acesso ao microfone
+                const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                
+                // Configurar o MediaRecorder
+                mediaRecorder = new MediaRecorder(stream);
+                audioChunks = [];
+                
+                mediaRecorder.ondataavailable = function(e) {
+                    audioChunks.push(e.data);
+                };
+                
+                mediaRecorder.onstop = function() {
+                    // Criar blob com os chunks de áudio
+                    recordedBlob = new Blob(audioChunks, { type: 'audio/wav' });
+                    
+                    // Criar URL para o blob e definir como fonte do áudio
+                    const audioUrl = URL.createObjectURL(recordedBlob);
+                    const audioElement = document.getElementById('recordedAudio');
+                    audioElement.src = audioUrl;
+                    
+                    // Mostrar o player e o botão para usar a gravação
+                    document.getElementById('audioPreview').style.display = 'block';
+                    
+                    // Atualizar status
+                    document.getElementById('recordingStatus').textContent = 'Gravação concluída';
+                    
+                    // Parar o timer
+                    clearInterval(recordingTimer);
+                };
+                
+                // Iniciar gravação
+                mediaRecorder.start();
+                
+                // Atualizar UI
+                document.getElementById('startRecord').disabled = true;
+                document.getElementById('stopRecord').disabled = false;
+                document.getElementById('recordingStatus').textContent = 'Gravando...';
+                
+                // Iniciar timer
+                recordingTime = 0;
+                updateRecordingTimer();
+                recordingTimer = setInterval(updateRecordingTimer, 1000);
+                
+            } catch (err) {
+                console.error('Erro ao acessar o microfone:', err);
+                alert('Não foi possível acessar o microfone. Verifique as permissões do navegador.');
+            }
+        });
+
+        document.getElementById('stopRecord').addEventListener('click', function() {
+            if (mediaRecorder && mediaRecorder.state !== 'inactive') {
+                mediaRecorder.stop();
+                
+                // Parar todas as faixas do stream
+                mediaRecorder.stream.getTracks().forEach(track => track.stop());
+                
+                // Atualizar UI
+                document.getElementById('startRecord').disabled = false;
+                document.getElementById('stopRecord').disabled = true;
+            }
+        });
+
+        document.getElementById('useRecording').addEventListener('click', function() {
+            if (recordedBlob) {
+                // Criar um arquivo a partir do blob
+                const fileName = `gravacao_${new Date().toISOString().replace(/[-:.]/g, '')}.wav`;
+                const recordedFile = new File([recordedBlob], fileName, { type: 'audio/wav' });
+                
+                // Criar um objeto DataTransfer e adicionar o arquivo
+                const dataTransfer = new DataTransfer();
+                dataTransfer.items.add(recordedFile);
+                
+                // Definir o arquivo no input de arquivo
+                const fileInput = document.getElementById('audioFile');
+                fileInput.files = dataTransfer.files;
+                
+                // Atualizar o nome do arquivo exibido
+                showFileName(fileInput);
+                
+                // Opcionalmente, rolar até o formulário
+                document.getElementById('uploadForm').scrollIntoView({ behavior: 'smooth' });
+            }
+        });
+
+        function updateRecordingTimer() {
+            recordingTime++;
+            const minutes = Math.floor(recordingTime / 60).toString().padStart(2, '0');
+            const seconds = (recordingTime % 60).toString().padStart(2, '0');
+            document.getElementById('recordingTimer').textContent = `${minutes}:${seconds}`;
+        }
+    </script>
+</body>
+</html>

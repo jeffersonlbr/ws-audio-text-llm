@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>EDP AudioTranscrição - {{ project }}</title>
+    <meta charset="UTF-8">
+    <style>
+        /* Definição de cores da EDP */
+        :root {
+            --edp-dark-blue: #1e2935;
+            --edp-green: #00e676;
+            --edp-light-gray: #f9f9f9;
+            --edp-dark-gray: #333333;
+            --edp-border-color: #00e676;
+        }
+        
+        /* Configuração correta das fontes */
+        @font-face {
+            font-family: 'Inter';
+            src: url('/static/fonte_logo/Inter-Regular.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
+        
+        @font-face {
+            font-family: 'Inter';
+            src: url('/static/fonte_logo/Inter-Italic.ttf') format('truetype');
+            font-weight: normal;
+            font-style: italic;
+        }
+        
+        @font-face {
+            font-family: 'GT Ultra';
+            src: url('/static/fonte_logo/gt-ultra-fine-bold.otf') format('opentype');
+            font-weight: bold;
+            font-style: normal;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', Arial, sans-serif;
+            max-width: 100%;
+            margin: 0 auto;
+            padding: 0;
+            color: var(--edp-dark-gray);
+            background-color: #ffffff;
+        }
+        
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 40px;
+            background-color: var(--edp-dark-blue);
+            color: white;
+            border-bottom: 1px solid var(--edp-border-color);
+        }
+        
+        .logo img {
+            height: 40px;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 30px;
+        }
+        
+        .nav-links a {
+            text-decoration: none;
+            color: white;
+            font-size: 15px;
+            padding: 8px 16px;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+        
+        .nav-links a.active {
+            background-color: rgba(255, 255, 255, 0.1);
+            font-weight: 500;
+        }
+        
+        .nav-links a:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+        
+        .main-container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        
+        .page-tag {
+            display: inline-block;
+            background-color: var(--edp-light-gray);
+            padding: 6px 15px;
+            border-radius: 20px;
+            margin-bottom: 15px;
+            font-size: 14px;
+            font-family: 'Inter', sans-serif;
+        }
+        
+        .title-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 25px;
+        }
+        
+        h1 {
+            font-family: 'GT Ultra', serif;
+            font-size: 28px;
+            font-weight: bold;
+            color: var(--edp-dark-blue);
+            margin: 0;
+        }
+        
+        .buttons-row {
+            display: flex;
+            gap: 10px;
+            margin: 20px 0;
+        }
+        
+        .download-button {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background-color: var(--edp-green);
+            color: var(--edp-dark-blue);
+            padding: 10px 15px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: background-color 0.3s;
+            font-family: 'Inter', sans-serif;
+        }
+        
+        .download-button:hover {
+            background-color: var(--edp-green);
+            opacity: 0.8;
+        }
+        
+        .back-button {
+            background-color: var(--edp-dark-blue);
+            color: white;
+            border: 1px solid var(--edp-green);
+        }
+        
+        .back-button:hover {
+            background-color: var(--edp-dark-blue);
+            opacity: 0.9;
+        }
+        
+        .info-bar {
+            display: flex;
+            flex-wrap: wrap;
+            background-color: var(--edp-light-gray);
+            padding: 15px 20px;
+            border-radius: 5px;
+            margin-bottom: 25px;
+            border-left: 4px solid var(--edp-green);
+            gap: 15px;
+        }
+        
+        .info-item {
+            flex: 1 1 auto;
+            min-width: 150px;
+        }
+        
+        .info-label {
+            font-weight: 500;
+            color: #666;
+            margin-bottom: 5px;
+            font-size: 14px;
+            font-family: 'Inter', sans-serif;
+        }
+        
+        .info-value {
+            color: var(--edp-dark-gray);
+            font-size: 15px;
+            font-family: 'Inter', sans-serif;
+        }
+        
+        .description-box {
+            background-color: var(--edp-light-gray);
+            padding: 20px;
+            border-radius: 5px;
+            margin-bottom: 30px;
+            border-left: 4px solid var(--edp-dark-blue);
+        }
+        
+        .description-label {
+            font-weight: 500;
+            margin-bottom: 8px;
+            font-family: 'Inter', sans-serif;
+        }
+        
+        .transcript-container {
+            background-color: #ffffff;
+            border-radius: 5px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            overflow: hidden;
+        }
+        
+        .transcript-header {
+            background-color: var(--edp-dark-blue);
+            padding: 15px 20px;
+            border-bottom: 1px solid var(--edp-green);
+        }
+        
+        .transcript-title {
+            font-family: 'GT Ultra', serif;
+            font-size: 18px;
+            font-weight: bold;
+            margin: 0;
+            color: white;
+        }
+        
+        .transcript-content {
+            padding: 20px;
+            line-height: 1.6;
+            white-space: normal;
+            border-left: 4px solid var(--edp-green);
+            font-family: 'Inter', sans-serif;
+        }
+        
+        .transcript-content p {
+            margin: 0 0 15px;
+            cursor: pointer;
+            padding: 5px;
+            border-radius: 4px;
+            transition: all 0.2s ease;
+        }
+        
+        .transcript-content p:hover {
+            background-color: rgba(0, 230, 118, 0.1);
+        }
+        
+        .entrevistador {
+            color: var(--edp-dark-blue);
+            font-weight: bold;
+        }
+        
+        .entrevistado {
+            color: var(--edp-green);
+            font-weight: bold;
+        }
+        
+        .speaker {
+            font-weight: bold;
+            color: var(--edp-dark-blue);
+        }
+
+        /* Estilos para o player de áudio */
+        .audio-player-container {
+            background-color: var(--edp-light-gray);
+            padding: 15px 20px;
+            border-radius: 5px;
+            margin-bottom: 25px;
+            border-left: 4px solid var(--edp-green);
+        }
+
+        .audio-player-title {
+            font-family: 'GT Ultra', serif;
+            font-size: 16px;
+            margin-bottom: 10px;
+            color: var(--edp-dark-blue);
+        }
+
+        .audio-player {
+            width: 100%;
+            margin-bottom: 10px;
+        }
+
+        .audio-player audio {
+            width: 100%;
+            border-radius: 4px;
+        }
+
+        .audio-controls {
+            display: flex;
+            gap: 10px;
+        }
+
+        .audio-control-button {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background-color: var(--edp-dark-blue);
+            color: white;
+            padding: 8px 12px;
+            border: 1px solid var(--edp-green);
+            border-radius: 5px;
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+            font-size: 14px;
+            transition: background-color 0.3s;
+        }
+
+        .audio-control-button:hover {
+            background-color: var(--edp-dark-blue);
+            opacity: 0.9;
+        }
+
+        /* Adicionar classe para destacar o texto atual durante a reprodução */
+        .playing-segment {
+            background-color: rgba(0, 230, 118, 0.1);
+            border-left: 3px solid var(--edp-green);
+            padding-left: 8px;
+        }
+        
+        /* Responsividade */
+        @media (max-width: 768px) {
+            .main-container {
+                padding: 20px 15px;
+            }
+            
+            header {
+                padding: 15px;
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .title-header {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .buttons-row {
+                flex-wrap: wrap;
+            }
+            
+            .info-bar {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <img src="/static/fonte_logo/logo.svg" alt="logo" onerror="this.onerror=null; this.src='https://www.edp.com/themes/edp/edp_scorp/logo.svg';">
+        </div>
+        <div class="nav-links">
+            <a href="/">AudioTranscrição</a>
+            <a href="/transcriptions" class="active">Histórico</a>
+        </div>
+    </header>
+    
+    <div class="main-container">
+        <div class="page-tag">Transcrição</div>
+        
+        <div class="title-header">
+            <h1>{{ project }}</h1>
+        </div>
+        
+        <div class="info-bar">
+            <div class="info-item">
+                <div class="info-label">Arquivo</div>
+                <div class="info-value">{{ filename }}</div>
+            </div>
+            <div class="info-item">
+                <div class="info-label">Data</div>
+                <div class="info-value">{{ formatted_date }}</div>
+            </div>
+            <div class="info-item">
+                <div class="info-label">Tamanho</div>
+                <div class="info-value">{{ formatted_size }}</div>
+            </div>
+            <div class="info-item">
+                <div class="info-label">Duração</div>
+                <div class="info-value">{{ formatted_duration }}</div>
+            </div>
+            <div class="info-item">
+                <div class="info-label">Speakers</div>
+                <div class="info-value">{{ speakers_count }}</div>
+            </div>
+            <div class="info-item">
+                <div class="info-label">Custo estimado</div>
+                <div class="info-value">{{ formatted_cost }}</div>
+            </div>
+        </div>
+        
+        {% if audio_path %}
+        <div class="audio-player-container">
+            <h3 class="audio-player-title">Reprodução de Áudio</h3>
+            <div class="audio-player">
+                <audio id="audioPlayer" controls>
+                    <source src="/audio/{{ trans_id }}/{{ audio_path }}" type="audio/mpeg">
+                    Seu navegador não suporta a reprodução de áudio.
+                </audio>
+            </div>
+            <div class="audio-controls">
+                <button id="playAll" class="audio-control-button">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M5 3L19 12L5 21V3Z" fill="#00e676" />
+                    </svg>
+                    Reproduzir tudo
+                </button>
+                <button id="pauseAudio" class="audio-control-button">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="6" y="4" width="4" height="16" fill="#00e676" />
+                        <rect x="14" y="4" width="4" height="16" fill="#00e676" />
+                    </svg>
+                    Pausar
+                </button>
+            </div>
+        </div>
+        {% endif %}
+        
+        {% if description %}
+        <div class="description-box">
+            <div class="description-label">Descrição</div>
+            <div>{{ description }}</div>
+        </div>
+        {% endif %}
+        
+        <div class="buttons-row">
+            <a href="/download/{{ trans_id }}/docx" class="download-button">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 15V3M12 15L8 11M12 15L16 11M20 16V17C20 19.2091 18.2091 21 16 21H8C5.79086 21 4 19.2091 4 17V16" stroke="#1e2935" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                Baixar DOCX
+            </a>
+            <a href="/download/{{ trans_id }}/txt" class="download-button">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 15V3M12 15L8 11M12 15L16 11M20 16V17C20 19.2091 18.2091 21 16 21H8C5.79086 21 4 19.2091 4 17V16" stroke="#1e2935" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                Baixar TXT
+            </a>
+            <a href="/transcriptions" class="download-button back-button">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M19 12H5M5 12L12 19M5 12L12 5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                Voltar
+            </a>
+        </div>
+        
+        <div class="transcript-container">
+            <div class="transcript-header">
+                <h2 class="transcript-title">Transcrição</h2>
+            </div>
+            <div class="transcript-content">
+                {% for line in transcription.split('\n\n') %}
+                    {% if ':' in line %}
+                        {% set parts = line.split(':', 1) %}
+                        {% set speaker = parts[0].strip() %}
+                        {% set text = parts[1].strip() %}
+                        
+                        {% if "SPEAKER" in speaker %}
+                            <p><span class="speaker">{{ speaker }}:</span> {{ text }}</p>
+                        {% elif speaker in speakers %}
+                            <p><span class="entrevistado">{{ speaker }}:</span> {{ text }}</p>
+                        {% else %}
+                            <p><span class="speaker">{{ speaker }}:</span> {{ text }}</p>
+                        {% endif %}
+                    {% else %}
+                        <p>{{ line }}</p>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const audioPlayer = document.getElementById('audioPlayer');
+            const playAllButton = document.getElementById('playAll');
+            const pauseButton = document.getElementById('pauseAudio');
+            
+            if (!audioPlayer) return;
+            
+            // Aguardar o carregamento dos metadados do áudio
+            audioPlayer.addEventListener('loadedmetadata', function() {
+                // Coletando todos os segmentos de texto da transcrição
+                const segments = [];
+                const audioDuration = audioPlayer.duration;
+                
+                // Obter todos os parágrafos da transcrição
+                document.querySelectorAll('.transcript-content p').forEach((p, index) => {
+                    const text = p.textContent;
+                    const textLength = text.length;
+                    
+                    p.setAttribute('data-segment-index', index);
+                    p.style.cursor = 'pointer';
+                    p.addEventListener('click', function() {
+                        // Ao clicar em um segmento, iniciar a reprodução a partir dele
+                        const segmentIndex = parseInt(this.getAttribute('data-segment-index'));
+                        if (segments[segmentIndex]) {
+                            // Ir diretamente para o timestamp calculado
+                            audioPlayer.currentTime = segments[segmentIndex].startTime;
+                            audioPlayer.play();
+                            highlightCurrentSegment(segmentIndex);
+                        }
+                    });
+                    
+                    segments.push({
+                        element: p,
+                        text: text,
+                        length: textLength,
+                        index: index
+                    });
+                });
+                
+                // Calculando posições estimadas com distribuição proporcional
+                if (segments.length > 0) {
+                    const totalTextLength = segments.reduce((sum, segment) => sum + segment.length, 0);
+                    
+                    let currentPosition = 0;
+                    segments.forEach(segment => {
+                        // Calcular a proporção deste segmento em relação ao texto total
+                        const segmentDuration = (segment.length / totalTextLength) * audioDuration;
+                        
+                        // Definir timestamp de início e fim
+                        segment.startTime = currentPosition;
+                        segment.endTime = currentPosition + segmentDuration;
+                        
+                        // Avançar posição atual
+                        currentPosition += segmentDuration;
+                        
+                        console.log(`Segmento ${segment.index}: ${segment.startTime.toFixed(2)}s até ${segment.endTime.toFixed(2)}s`);
+                    });
+                }
+                
+                // Configurando botões de controle
+                playAllButton.addEventListener('click', function() {
+                    audioPlayer.currentTime = 0;
+                    audioPlayer.play();
+                });
+                
+                pauseButton.addEventListener('click', function() {
+                    audioPlayer.pause();
+                });
+                
+                // Atualizando o destaque atual durante a reprodução
+                audioPlayer.addEventListener('timeupdate', function() {
+                    const currentTime = audioPlayer.currentTime;
+                    let currentSegmentIndex = -1;
+                    
+                    // Encontrar o segmento atual
+                    for (let i = 0; i < segments.length; i++) {
+                        if (currentTime >= segments[i].startTime && currentTime < segments[i].endTime) {
+                            currentSegmentIndex = i;
+                            break;
+                        }
+                    }
+                    
+                    if (currentSegmentIndex >= 0) {
+                        highlightCurrentSegment(currentSegmentIndex);
+                    }
+                });
+            });
+            
+            function highlightCurrentSegment(index) {
+                // Remover destaque de todos os segmentos
+                document.querySelectorAll('.transcript-content p').forEach(p => {
+                    p.classList.remove('playing-segment');
+                });
+                
+                // Destacar o segmento atual
+                const currentSegment = document.querySelector(`.transcript-content p[data-segment-index="${index}"]`);
+                if (currentSegment) {
+                    currentSegment.classList.add('playing-segment');
+                    
+                    // Scroll para o segmento atual
+                    currentSegment.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'center'
+                    });
+                }
+            }
+        });
+    </script>
+</body>
+</html>
